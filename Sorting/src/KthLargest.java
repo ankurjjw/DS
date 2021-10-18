@@ -1,0 +1,62 @@
+import java.util.Arrays;
+import java.util.Random;
+
+public class KthLargest {
+    public static void main(String[] args) {
+        int[] kArray = new int[]{1, 5, 4, 3, 2, 6};
+        int arrayLength = kArray.length;
+        int k=3;
+        int index;
+        quickSort(kArray, 0, arrayLength-1, arrayLength-k);
+        System.out.println(Arrays.toString(kArray));
+        System.out.println(kArray[arrayLength-k]);
+    }
+
+    private static void quickSort(int[] kArray, int start, int end, int index) {
+
+
+        if(start<end) {
+
+            int pivotIndex = partition(kArray, start, end);
+            System.out.println("pivot index " + pivotIndex + " index " + index + " Array " + Arrays.toString(kArray));
+
+            if (pivotIndex == index) {
+                return;
+            } else if (pivotIndex < index) {
+                quickSort(kArray, pivotIndex + 1, end, index);
+            } else {
+                quickSort(kArray, start, pivotIndex - 1, index);
+
+            }
+        }
+    }
+
+    private static int partition(int[] kArray,int start, int end) {
+        int low = start;
+        Random random = new Random();
+
+        int pivotIndex = random.nextInt(end - start) + start;
+
+        int temp = kArray[pivotIndex];
+        kArray[pivotIndex] = kArray[low];
+        kArray[low] = temp;
+
+        int pivot = kArray[low];
+        System.out.println("start of partition " + pivotIndex + " " + low+ " " +Arrays.toString(kArray) + start + end);
+        int high=start+1;
+        while(high<=end){
+            if(kArray[high] <= pivot){
+                low++;
+                temp = kArray[high];
+                kArray[high] = kArray[low];
+                kArray[low] = temp;
+            }
+            high++;
+        }
+        temp=kArray[start];
+        kArray[start]=kArray[low];
+        kArray[low] = temp;
+        System.out.println("end of partition " + pivotIndex + " " + low+ " " +Arrays.toString(kArray));
+        return low;
+    }
+}
